@@ -1,0 +1,100 @@
+---
+  pipeline:
+    # 35x to 5x with a step of 5x
+    # Addding some additional data points between 20x and 5x
+    hg003_subsets:
+      - "857142"
+      - "714285"
+      - "571428"
+      - "485714"
+      - "428571"
+      - "371429"
+      - "314286"
+      - "285714"
+      - "257143"
+      - "228571"
+      - "2"
+      - "142857"
+  input:
+    pFDA_Truth_V2_submissions:
+      Google_Health:
+        HG002: "path/GH_pFDA-Truth-V2_submissions/DeepVariant.PacBio.HG002.vcf.gz"
+        HG003: "path/GH_pFDA-Truth-V2_submissions/DeepVariant.PacBio.HG003.vcf.gz"
+        HG004: "path/GH_pFDA-Truth-V2_submissions/DeepVariant.PacBio.HG004.vcf.gz"
+    ref:
+      hs38: "/home/regression/references/hg38bundle/hs38.fa"
+    mhc:
+      hs38: "/net/c1n15/data/user/dfreed/DS__PacBio_Phase-I_pipeline__20210520/hs38_MHC.bed"
+    sdf:
+      hs38: "/home/regression/references/hg38bundle/hs38.sdf"
+    dbsnp:
+      hs38: "/home/regression/references/hg38bundle/dbsnp_146.hg38.vcf.gz"
+    samples:
+      pFDA-truth_V2-PB-HG002:
+        fq:
+          - path/truth_v2/HG002/HG002_35x_PacBio_14kb-15kb.fastq.gz
+        rg:
+          - "@RG\\tID:HG002-pFDA-truthV2-PB\\tSM:HG002"
+      pFDA-truth_V2-PB-HG003:
+        fq:
+          - path/truth_v2/HG003/HG003_35x_PacBio_14kb-15kb.fastq.gz
+        rg:
+          - "@RG\\tID:HG003-pFDA-truthV2-PB\\tSM:HG003"
+      pFDA-truth_V2-PB-HG004:
+        fq:
+          - path/truth_v2/HG004/HG004_35x_PacBio_14kb-15kb.fastq.gz
+        rg:
+          - "@RG\\tID:HG003-pFDA-truthV2-PB\\tSM:HG004"
+      HG002-chemV2.2-sample:
+        bam:
+          - path/PacBio/chemistry_v2.2__20210517/m64003_201222_001125.GRCh38.bam
+          - path/PacBio/chemistry_v2.2__20210517/m64003_201223_090834.GRCh38.bam
+          - path/PacBio/chemistry_v2.2__20210517/m64009_201224_151647.GRCh38.bam
+    truth:
+      hg38:
+        v4.2.1:
+          HG002:
+            vcf: "path/truthsets_NIST/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark.vcf.gz"
+            bed: "path/truthsets_NIST/AshkenazimTrio/HG002_NA24385_son/NISTv4.2.1/GRCh38/HG002_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed"
+          HG003:
+            vcf: "path/truthsets_NIST/AshkenazimTrio/HG003_NA24149_father/NISTv4.2.1/GRCh38/HG003_GRCh38_1_22_v4.2.1_benchmark.vcf.gz"
+            bed: "path/truthsets_NIST/AshkenazimTrio/HG003_NA24149_father/NISTv4.2.1/GRCh38/HG003_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed"
+          HG004:
+            vcf: "path/truthsets_NIST/AshkenazimTrio/HG004_NA24143_mother/NISTv4.2.1/GRCh38/HG004_GRCh38_1_22_v4.2.1_benchmark.vcf.gz"
+            bed: "path/truthsets_NIST/AshkenazimTrio/HG004_NA24143_mother/NISTv4.2.1/GRCh38/HG004_GRCh38_1_22_v4.2.1_benchmark_noinconsistent.bed"
+        CMRGv1.00:
+          HG002:
+            vcf: "path/data/HG002_GRCh38_CMRG_smallvar_v1.00.vcf.gz"
+            bed: "path/data/HG002_GRCh38_CMRG_smallvar_v1.00.bed"
+    strat_tsv:
+      hg38: path/stratifications/GRCh38/v2.0-GRCh38-stratifications_simple.tsv
+  sample_map:
+    pFDA-truth_V2-PB-HG002: HG002
+    pFDA-truth_V2-PB-HG003: HG003
+    pFDA-truth_V2-PB-HG004: HG004
+    HG002-chemV2.2-sample: HG002
+    GH_pFDA_truth_V2--HG002: HG002
+    GH_pFDA_truth_V2--HG003: HG003
+    GH_pFDA_truth_V2--HG004: HG004
+  gender_map:
+    HG002: "male"
+    HG003: "male"
+    HG004: "female"
+  ref_map:
+    hs38: "hg38"
+  tools:
+    pbmm2: "/home/dfreed/anaconda3/bin/pbmm2"
+    sentieon: "/home/release/sentieon-genomics-202010.04/bin/sentieon"
+    samtools: "/programs/samtools/samtools-1.13/samtools"
+    bedtools: "path/bedtools/bedtools2/bin/bedtools"
+    dnascope_hifi: "path/DNAscopeHiFiBeta0.4.pipeline/dnascope_HiFi.sh"
+    dnascope_hifi_model: "path/DNAscopeHiFiBeta0.4.pipeline/DNAscopeHiFiBeta0.4.model"
+    bcftools: "/programs/bcftools/bcftools-1.11/bcftools"
+    python2: /home/dfreed/anaconda2/bin/python
+    python3: /home/dfreed/anaconda3/bin/python
+    happy: path/happy/bin/hap.py
+    rtg_dir: "path/rtg-tools-3.8.2"
+    extract_extended_metrics: path/scripts/extract_extended_metrics.py
+    figure_notebook: path/scripts/plot_figures.ipynb
+    papermill: /home/dfreed/anaconda3/bin/papermill
+    jupyter: /home/dfreed/anaconda3/bin/jupyter
